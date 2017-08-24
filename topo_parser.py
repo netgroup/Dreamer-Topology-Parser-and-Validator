@@ -65,6 +65,7 @@ class TopoParser:
         self.testbed = None
         self.mapped = False
         self.vlan = None
+        self.path_grpc = ""
         if self.verbose:
             print "*** __init__: version topology format:", self.version
         path_json = self.path + path_json
@@ -87,6 +88,7 @@ class TopoParser:
         self.load_links()
         self.load_vss()
         self.create_subnet()
+        self.load_grpc()
         self.parsed = True
 
     def getsubnets(self):
@@ -108,6 +110,12 @@ class TopoParser:
         if self.parsed == False:
             self.parse_data()
         return self.vss
+
+    def load_grpc(self):
+        if self.verbose:
+            print "*** Retrieve Grpc Options"
+        grpc_ipv6 = self.json_data['grpc_ipv6'] if 'grpc_ipv6' in self.json_data else []
+        self.path_grpc = grpc_ipv6['path']
 
     def load_advanced(self):
         if self.verbose:
